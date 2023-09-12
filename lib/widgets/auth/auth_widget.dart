@@ -65,15 +65,18 @@ class _AuthButtonWidget extends StatelessWidget {
     const _sizeTextWhite = TextStyle(fontSize: 20.0, color: Colors.white);
     final onPressed =
         model?.canStartAuth == true ? () => model?.auth(context) : null;
-    return MaterialButton(
-      color: Colors.blue,
-      height: 50.0,
-      minWidth: 150.0,
+    final child = model?.isAuthProgress == true
+        ? SizedBox(child: CircularProgressIndicator())
+        : const Text(
+            "Авторизоваться",
+            style: _sizeTextWhite,
+          );
+    return ElevatedButton(
+      // color: Colors.blue,
+      // height: 50.0,
+      // minWidth: 150.0,
       onPressed: onPressed,
-      child: Text(
-        "Авторизоваться",
-        style: _sizeTextWhite,
-      ),
+      child: child,
     );
   }
 }

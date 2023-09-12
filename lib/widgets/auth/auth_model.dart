@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_first_try/domain/api_client/api_client.dart';
+import 'package:flutter_first_try/domain/data_providers/session_data_provider.dart';
 
 class AuthModel extends ChangeNotifier {
   final _apiClient = ApiClient();
+  final _sessionDataProvider = SessionDataProvider();
+
   final phoneController = TextEditingController(text: '79963297447');
   final passwordController = TextEditingController(text: '34940');
   String? _errorMessage;
@@ -12,8 +15,10 @@ class AuthModel extends ChangeNotifier {
   bool _isAuthProgress = false;
 
   bool get canStartAuth => !_isAuthProgress;
+  bool get isAuthProgress => _isAuthProgress;
 
   Future<void> auth(BuildContext context) async {
+    String? token;
     final phone = phoneController.text;
     final password = passwordController.text;
     if (phone.isEmpty || password.isEmpty) {
@@ -24,9 +29,22 @@ class AuthModel extends ChangeNotifier {
     _errorMessage = null;
     _isAuthProgress = true;
     notifyListeners();
-    final token = await _apiClient.auth(phone: phone, password: password);
+    try {
+      token = await _apiClient.auth(phone: phone, password: password);
+    } catch (e) {
+      _errorMessage = 'Неправильный логин пароль!';
+    }
     _isAuthProgress = false;
-    _isAuthProgress = true;
+    if (_errorMessage != null) {
+      notifyListeners();
+    }
+    if (token == null) {
+      _errorMessage = 'Неизвестная ошибка';
+      notifyListeners();
+      return;
+    }
+    await _sessionDataProvider.setToken(token);
+    Navigator.of(context).pushNamed('/main_screen');
   }
 }
 
