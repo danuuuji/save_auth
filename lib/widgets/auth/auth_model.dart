@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_first_try/domain/api_client/api_client.dart';
 import 'package:flutter_first_try/domain/data_providers/session_data_provider.dart';
+import 'package:flutter_first_try/ui/navigation/main_navigation.dart';
 
 class AuthModel extends ChangeNotifier {
   final _apiClient = ApiClient();
@@ -44,7 +45,8 @@ class AuthModel extends ChangeNotifier {
       return;
     }
     await _sessionDataProvider.setToken(token);
-    Navigator.of(context).pushNamed('/main_screen');
+    Navigator.of(context)
+        .pushReplacementNamed(MainNavigationRouteNames.mainScreen);
   }
 }
 

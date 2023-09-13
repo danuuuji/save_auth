@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_first_try/widgets/auth/auth_model.dart';
-import 'package:flutter_first_try/widgets/main_screen/main_screen_widget.dart';
 
 class AuthWidget extends StatelessWidget {
   const AuthWidget({super.key});
@@ -10,11 +9,7 @@ class AuthWidget extends StatelessWidget {
     const _sizeTextBlack = TextStyle(fontSize: 20.0, color: Colors.black);
 
     final model = AuthProvider.read(context)?.model;
-    // final TextEditingController _phoneController = TextEditingController(text: 'admin');
-    // final TextEditingController _passwordController = TextEditingController(text: 'admin');
-    // String? errorText;
 
-    //final errorText = this.errorText;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Авторизация'),
@@ -57,7 +52,7 @@ class AuthWidget extends StatelessWidget {
 }
 
 class _AuthButtonWidget extends StatelessWidget {
-  const _AuthButtonWidget({super.key});
+  const _AuthButtonWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -66,15 +61,12 @@ class _AuthButtonWidget extends StatelessWidget {
     final onPressed =
         model?.canStartAuth == true ? () => model?.auth(context) : null;
     final child = model?.isAuthProgress == true
-        ? SizedBox(child: CircularProgressIndicator())
+        ? const SizedBox(child: CircularProgressIndicator())
         : const Text(
             "Авторизоваться",
             style: _sizeTextWhite,
           );
     return ElevatedButton(
-      // color: Colors.blue,
-      // height: 50.0,
-      // minWidth: 150.0,
       onPressed: onPressed,
       child: child,
     );
@@ -82,7 +74,7 @@ class _AuthButtonWidget extends StatelessWidget {
 }
 
 class _ErrorMessageWidget extends StatelessWidget {
-  const _ErrorMessageWidget({super.key});
+  const _ErrorMessageWidget();
 
   @override
   Widget build(BuildContext context) {

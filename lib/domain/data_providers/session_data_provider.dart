@@ -7,6 +7,11 @@ abstract class _Keys {
 class SessionDataProvider {
   static const _secureStorage = FlutterSecureStorage();
   Future<String?> getToken() async => _secureStorage.read(key: _Keys.token);
-  Future<void> setToken(String value) =>
-      _secureStorage.write(key: _Keys.token, value: value);
+  Future<void> setToken(String? value) {
+    if (value != null) {
+      return _secureStorage.write(key: _Keys.token, value: value);
+    } else {
+      return _secureStorage.delete(key: _Keys.token);
+    }
+  }
 }
